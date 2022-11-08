@@ -54,59 +54,60 @@ basic.forever(function() {
     iBallX = iBallX + iBallDirectionX
     iBallY = iBallY + iBallDirectionY
 
-    // If we hit the right wall, bounce back!
-    if (iBallX > 4) {
+    // If we hit the left or right wall, bounce back!
+    if (iBallX < 0 || iBallX > 4) {
+
         playWallBounceSound();
-        iBallX = 4;
+
+        // Don't let it go past the wall
+        if (iBallX < 0) {
+            iBallX = 0;
+        } else {
+            iBallX = 4;
+        }
+        
         if (Math.randomRange(1, 5) > 1) {
             // Normal (4 in 5) case: bounce back opposite!
             iBallDirectionX *= -1;
         } else {
             // This is the rare (1 in 5) case: stick to the wall!
-            iBallDirectionX = 0;
-            iBallDirectionY *= -1;
+            iBallDirectionY = Math.randomBoolean() ? 1 : -1;
+
+            // But avoid the corner trap:
+            if (iBallY <= 0 || iBallY >= 4) {
+                iBallDirectionX *= -1
+            } else {
+                iBallDirectionX = 0;
+            }
         }
     }
 
-    // If we hit the left wall, bounce back!
-    if (iBallX < 0) {
-        playWallBounceSound();
-        iBallX = 0;
-        if (Math.randomRange(1, 5) > 1) {
-            // Normal (4 in 5) case: bounce back opposite!
-            iBallDirectionX *= -1;
-        } else {
-            // This is the rare (1 in 5) case: stick to the wall!
-            iBallDirectionX = 0;
-            iBallDirectionY *= -1;
-        }
-    }
+    // If we hit the top or bottom wall, bounce back!
+    if (iBallY < 0 || iBallY > 4) {
 
-    // If we hit the bottom wall, bounce back!
-    if (iBallY > 4) {
         playWallBounceSound();
-        iBallY = 4;
-        if (Math.randomRange(1, 5) > 1) {
-            // Normal (4 in 5) case: bounce back opposite!
-            iBallDirectionY *= -1;
-        } else {
-            // This is the rare (1 in 5) case: stick to the wall!
-            iBallDirectionY = 0;
-            iBallDirectionX *= -1;
-        }
-    }
 
-    // If we hit the top wall, bounce back!
-    if (iBallY < 0) {
-        playWallBounceSound();
-        iBallY = 0;
+        // Don't let it go past the wall
+        if (iBallY < 0) {
+            iBallY = 0;
+        } else {
+            iBallY = 4;
+        }
+
         if (Math.randomRange(1, 5) > 1) {
             // Normal (4 in 5) case: bounce back opposite!
             iBallDirectionY *= -1;
         } else {
             // This is the rare (1 in 5) case: stick to the wall!
-            iBallDirectionY = 0;
-            iBallDirectionX *= -1;
+
+            iBallDirectionX = Math.randomBoolean() ? 1 : -1;
+
+            // But avoid the corner trap:
+            if (iBallX <= 0 || iBallX >= 4) {
+                iBallDirectionY *= -1
+            } else {
+                iBallDirectionY = 0;
+            }
         }
     }
   
@@ -114,7 +115,7 @@ basic.forever(function() {
 })
 
 function playWallBounceSound() {
-    music.playTone(400, 30)
-    basic.pause(10)
-    music.playTone(300, 70)
+    music.playTone(600, 30)
+    basic.pause(150)
+    music.playTone(450, 70)
 }
