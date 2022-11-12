@@ -1,10 +1,10 @@
 let iPaddleX = 1;
 let iPaddleY = 4;
 let iPaddleWidth = 2;
-let iBallX = 2;
+let iBallX = 3;
 let iBallY = 0;
 let iBallDirectionX = -1;
-let iBallDirectionY = 1;
+let iBallDirectionY = 0.75;
 let iFieldSize = 5;
 
 drawPaddle();
@@ -76,7 +76,10 @@ basic.forever(function() {
         // Did we hit the paddle?
         if (iBallX >= iPaddleX && iBallX <= (iPaddleX + iPaddleWidth - 1)) {
             playPaddleBounceSound();
+            game.setScore(game.score() + 1);
             iBallDirectionY *= -1; // Bounce back opposite!
+            // On each bounce, send the ball in a random X direction:
+            iBallDirectionX = Math.randomRange(-1, 1);
         } else {
             // We hit the bottom wall without the paddle: game over!
             pongGameOver();
@@ -89,6 +92,7 @@ basic.forever(function() {
     iBallY = iBallY + iBallDirectionY;
   
     drawBall();
+    drawPaddle()
 })
 
 function playWallBounceSound() {
