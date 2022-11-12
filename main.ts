@@ -6,6 +6,7 @@ let iBallY = 0;
 let iBallDirectionX = -1;
 let iBallDirectionY = 0.75;
 let iFieldSize = 5;
+game.setScore (1)
 
 drawPaddle();
 drawBall();
@@ -76,7 +77,7 @@ basic.forever(function() {
         // Did we hit the paddle?
         if (iBallX >= iPaddleX && iBallX <= (iPaddleX + iPaddleWidth - 1)) {
             playPaddleBounceSound();
-            game.setScore(game.score() + 1);
+            game.setScore(game.score() * 2);
             iBallDirectionY *= -1; // Bounce back opposite!
             // On each bounce, send the ball in a random X direction:
             iBallDirectionX = Math.randomRange(-1, 1);
